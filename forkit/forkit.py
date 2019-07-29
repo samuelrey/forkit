@@ -21,6 +21,9 @@ def fork_repo(gobj, owner_login, repo_name):
 
     Returns:
         A Github Repository.
+
+    Raises:
+        GithubException
     '''
     user = gobj.get_user()
     repo = gobj.get_user(owner_login).get_repo(repo_name)
