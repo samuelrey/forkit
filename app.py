@@ -1,7 +1,12 @@
 #!/usr/bin/env python3.7
 import argparse
+import github
 
-if __name__ == '__main__':
+from forkit import forkit
+from forkit import secrets
+
+
+def main():
     parser = argparse.ArgumentParser(description='Start contributing sooner. '
                                      'Use forkit to get your dev environment '
                                      'setup.')
@@ -20,5 +25,24 @@ if __name__ == '__main__':
                         'repository but also sets up a feature branch for '
                         'development',
                         action='store_true')
+    # TODO(sammy): add optional argument to set up secrets
     args = parser.parse_args()
+
+    if args.clone and args.dev:
+        print('Please use either --dev or --clone, not both! Get more info '
+              'with --help.')
+        return 1
+
+    # TODO(sammy): hide this behind another layer
+    gobj = github.Github(secrets.access_token)
+
+    try:
+        forked_repo = forkit.fork_repo(gobj, args.owner_login, args.repo_name)
+    except github.GithubException as e:
+        print('Something isn\'t right...')
+        return 1
+
+
+if __name__ == '__main__':
+    main()
 
