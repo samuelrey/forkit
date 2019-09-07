@@ -1,8 +1,30 @@
+import click
 import git
 import github
 import os.path
 
 githuburl = 'https://github.com/{}/{}'
+
+
+@click.command()
+@click.argument('owner_login')
+@click.argument('repo_name')
+def main(owner_login, repo_name):
+    '''Start contributing sooner. Use forkit to setup your dev environment.
+
+    Arguments:
+
+        owner_login: The Github login of the repo owner, eg. samuelrey
+
+        repo_name: The name of the Github repository to fork, eg. forkit
+    '''
+    gobj = github.Github(get_access_token())
+    repo = fork_repo(gobj, owner_login, repo_name)
+
+
+def get_access_token():
+    import secrets
+    return secrets.access_token
 
 
 def get_current_login():
@@ -48,6 +70,9 @@ def clone_repo(repo_name, owner_login=get_current_login(), project_dir='.'):
     g.clone(githuburl.format(owner_login, repo_name))
     return os.path.join(project_dir, repo_name)
 
+
+if __name__ == '__main__':
+    main()
 ########################################
 #   UNDER CONSTRUCTION                 #
 ########################################
