@@ -3,7 +3,7 @@ import os.path
 import shutil
 import unittest
 
-import forkit.forkit as forkit
+import forkit
 
 
 class ForkitTest(unittest.TestCase):
@@ -49,13 +49,12 @@ class ForkitTest(unittest.TestCase):
             forkit.fork_repo(self.gobj, owner_login, missing_repo_name)
 
     def test_clone_repo(self):
-        repo_name = 'PyGithub'
-        owner_login = 'PyGithub'
-        expected_dir = os.path.join('.', repo_name)
+        repo = self.gobj.get_repo('PyGithub/PyGithub')
+        expected_dir = os.path.join('.', repo.name)
 
         self.assertFalse(os.path.exists(expected_dir))
 
-        local_dir = forkit.clone_repo(repo_name, owner_login)
+        local_dir = forkit.clone_repo(repo)
 
         self.assertEqual(local_dir, expected_dir)
         self.assertTrue(os.path.exists(local_dir))
