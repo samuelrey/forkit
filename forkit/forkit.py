@@ -9,7 +9,12 @@ githuburl = 'https://github.com/{}/{}'
 @click.command()
 @click.argument('owner_login')
 @click.argument('repo_name')
-def main(owner_login, repo_name):
+@click.option(
+    '--clone',
+    help='Clone the newly forked repository to the current directory',
+    is_flag=True,
+    default=False)
+def main(owner_login, repo_name, clone):
     '''Start contributing sooner. Use forkit to setup your dev environment.
 
     Arguments:
@@ -18,8 +23,16 @@ def main(owner_login, repo_name):
 
         repo_name: The name of the Github repository to fork, eg. forkit
     '''
+    print('🕑 Forking {}/{}...'.format(owner_login, repo_name))
     gobj = github.Github(get_access_token())
     repo = fork_repo(gobj, owner_login, repo_name)
+    print('🎉 Forked to {}/{}!'.format(get_current_login(), repo_name))
+
+    if clone:
+        print('🕑 Cloning {}/{}...'.format(get_current_login(), repo_name))
+        local_repo = clone_repo(repo)
+        if os.path.exists(local_repo):
+            print('🎉 Cloned to {}!'.format(local_repo))
 
 
 def get_access_token():
@@ -52,13 +65,11 @@ def fork_repo(gobj, owner_login, repo_name):
     return user.create_fork(repo)
 
 
-def clone_repo(repo_name, owner_login=get_current_login(), project_dir='.'):
-    '''Clones the repository at user/repo to the target directory
+def clone_repo(repo, project_dir='.'):
+    '''Clones the repository at the given URL to the target directory
 
     Arguments:
-        repo_name: A string that represents the Github full name of the repo.
-        owner_login: A string that represents the Github login of the repo
-            owner. Defaults to the current login.
+        repo: A Github repository.
         project_dir: A string that represents the filepath to an existing
             directory to where the repo will be cloned. Defaults to the
             current directory.
@@ -67,8 +78,8 @@ def clone_repo(repo_name, owner_login=get_current_login(), project_dir='.'):
         The path to the locally cloned repository.
     '''
     g = git.Git(project_dir)
-    g.clone(githuburl.format(owner_login, repo_name))
-    return os.path.join(project_dir, repo_name)
+    g.clone(repo.git_url)
+    return os.path.join(project_dir, repo.name)
 
 
 if __name__ == '__main__':
