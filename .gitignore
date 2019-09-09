@@ -1,3 +1,4 @@
 env
-secrets.py
+config.py
 *.pyc
+forkit.egg-info

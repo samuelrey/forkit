@@ -8,9 +8,9 @@ import forkit
 
 class ForkitTest(unittest.TestCase):
     def setUp(self):
-        import secrets
-        access_token = secrets.access_token
-        self.login = secrets.login
+        import config
+        access_token = config.access_token
+        self.login = config.login
         self.gobj = github.Github(access_token)
 
     def test_fork_repo(self):

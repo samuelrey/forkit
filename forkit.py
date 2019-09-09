@@ -6,6 +6,10 @@ import os.path
 githuburl = 'https://github.com/{}/{}'
 
 
+# TODO(sammy): consider changing owner_login and repo_name to options. If we
+# want to support --set-user as an option, then it wouldn't make sense to be
+# forced to provide a login and repo. The alternative is that we define some
+# other method for setting up the config.
 @click.command()
 @click.argument('owner_login')
 @click.argument('repo_name')
@@ -36,13 +40,13 @@ def main(owner_login, repo_name, clone):
 
 
 def get_access_token():
-    import secrets
-    return secrets.access_token
+    import config
+    return config.access_token
 
 
 def get_current_login():
-    import secrets
-    return secrets.login
+    import config
+    return config.login
 
 
 def fork_repo(gobj, owner_login, repo_name):
@@ -82,8 +86,6 @@ def clone_repo(repo, project_dir='.'):
     return os.path.join(project_dir, repo.name)
 
 
-if __name__ == '__main__':
-    main()
 ########################################
 #   UNDER CONSTRUCTION                 #
 ########################################
