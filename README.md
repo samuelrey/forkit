@@ -1,5 +1,5 @@
 # forkit
-> forkit is a command line tool to help open source contributors get to contributing sooner.
+forkit is a command line tool to help open source contributors get to contributing sooner.
 
 ## Table of contents
 * [General info](#general-info)
@@ -34,7 +34,7 @@ And install with pip3:
 `pip3 install .`
 
 ### Contributors
-You may want to create a (virtualenv)[https://virtualenv.pypa.io/en/latest/] to keep dependencies clean.
+You may want to create a [virtualenv](https://virtualenv.pypa.io/en/latest/) to keep dependencies clean.
 
 Install dependencies with:
 `pip install -r requirements.txt`
