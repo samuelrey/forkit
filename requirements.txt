@@ -6,7 +6,7 @@ gitdb2==2.0.5
 GitPython==2.1.13
 idna==2.8
 PyGithub==1.43.8
-PyJWT==1.7.1
+PyJWT==2.4.0
 requests==2.22.0
 smmap2==2.0.5
 urllib3==1.26.5
